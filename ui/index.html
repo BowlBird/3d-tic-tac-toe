@@ -7,14 +7,13 @@
   </head>
   <body>
     <h1 id="ip"></h1>
-    <p id="allowConnections">Connections Not Allowed</p>
-    <button id="allowConnectionsButton" onclick="allowConnections()">Allow Connections</button>
-    <button onclick="connect()" id="connectToAddressButton" >Connect</button>
-    <input type="text" id="connectToAddress">
-    <br>
+    <div>
+        <p>Send to:</p>
+        <input type="text" id="outgoingIp">
+    </div>
     <input type="text" id="messageText">
     <button onclick="sendMessage()">Send</button>
-    <button onclick="receiveMessages()">Refresh Messages</button>
+    <button onclick="receiveMessages()" id="receiveMessagesButton">Refresh Messages</button>
     <p id="receivedMessages"></p>
   </body>
   <script src="index.js"></script>
