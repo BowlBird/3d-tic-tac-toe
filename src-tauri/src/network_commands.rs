@@ -9,14 +9,15 @@ pub fn get_ip_address() -> String {
 
 #[tauri::command]
 pub fn send_message(message: String, ip: String) {
-    let socket = UdpSocket::bind("172.25.152.246:3334").unwrap();
+    let host_ip = local_ip().unwrap().to_string();
+    let socket = UdpSocket::bind(format!("{host_ip}:3334")).unwrap();
     socket.send_to(&message.clone().as_bytes(), format!("{ip}:3333")).unwrap();
 }
 
 #[tauri::command]
 pub async fn receive_messages() -> String {
-
-    let socket = UdpSocket::bind("172.25.152.246:3333").unwrap();
+    let host_ip = local_ip().unwrap().to_string();
+    let socket = UdpSocket::bind(format!("{host_ip}:3333")).unwrap();
     let mut buf = [0; 1024];
     let amount = socket.recv(&mut buf).unwrap();
     let buf = &mut buf[..amount];
