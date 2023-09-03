@@ -10,6 +10,11 @@ run:
 ```
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
+or go to 
+```
+https://www.rust-lang.org/learn/get-started
+```
+on windows.
 and go through the installer.
 
 If you do not have NPM installed, you will need to download it [here](https://nodejs.org/en/download).
