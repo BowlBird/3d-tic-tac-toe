@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Network from './components/Network.vue'
+import CreateLobby from './components/Menus/CreateLobby.vue'
 import Test from './components/Test.vue'
 import TitleScreen from './components/Menus/TitleScreen.vue'
 
@@ -11,8 +11,8 @@ export default createRouter({
       component: TitleScreen,
     },
     {
-        path: '/Network',
-        component: Network,
+        path: '/CreateLobby',
+        component: CreateLobby,
     },
     {
         path: '/Test',

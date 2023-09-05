@@ -1,11 +1,9 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use std::net::UdpSocket;
-
+use std::{net::UdpSocket, thread};
 use local_ip_address::local_ip;
-
-use crate::network_commands::{encrypt_ip, decrypt_ip};
+use network_commands::UnacknowledgedMessages;
 
 pub mod network_commands;
 
@@ -14,6 +12,7 @@ pub struct Socket(UdpSocket);
 fn main() {
   tauri::Builder::default()
     .manage(Socket(open_socket()))
+    .manage(UnacknowledgedMessages(Vec::new().into()))
     .invoke_handler(tauri::generate_handler![
       network_commands::get_encrypted_ip_address,
       network_commands::get_decrypted_ip_address,
@@ -21,7 +20,8 @@ fn main() {
       network_commands::send_message_encrypted_ip,
       network_commands::send_message_decrypted_ip,
       network_commands::encrypt_ip,
-      network_commands::decrypt_ip
+      network_commands::decrypt_ip,
+      network_commands::message_watcher
       ])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
