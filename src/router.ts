@@ -1,22 +1,22 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import CreateLobby from './components/Menus/CreateLobby.vue'
-import Test from './components/Test.vue'
 import TitleScreen from './components/Menus/TitleScreen.vue'
+import ChooseUsername from './components/Menus/ChooseUsername.vue'
 
 export default createRouter({
   history: createWebHistory(),
   routes: [
     {
       path: '/',
-      component: TitleScreen,
+      component: ChooseUsername,
+    },
+    {
+        path: '/Title',
+        component: TitleScreen
     },
     {
         path: '/CreateLobby',
         component: CreateLobby,
     },
-    {
-        path: '/Test',
-        component: Test,
-    }
   ]
 })

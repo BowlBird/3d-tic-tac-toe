@@ -1,6 +1,9 @@
+import { invoke } from "@tauri-apps/api";
+
 export enum MessageType {
+    Confirmation,
     ConnectionRequest,
-    Confirmation
+    ConnectionApproval
 }
 
 export type Message = {
@@ -11,17 +14,23 @@ export type Message = {
     content: string;
 }
 
-export function Message(from: string, username: string, type: MessageType, content: string): Message {
-    return {
-        id: MakeID(7),
-        from: from,
-        username: username,
-        type: type,
-        content: content
-    }
+export function createMessage(username: string, type: MessageType, content: string): Promise<Message> {
+    return invoke('get_encrypted_ip_address').then( (ip: unknown) =>  {
+        return {
+            id: makeID(7),
+            from: ip as string,
+            username: username,
+            type: type,
+            content: content
+        }
+    });
 }
 
-function MakeID(length: number) {
+export function messageFromString(message: string): Message {
+    return JSON.parse(message) as Message
+}
+
+function makeID(length: number) {
     let result = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     const charactersLength = characters.length;

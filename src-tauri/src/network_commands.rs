@@ -58,7 +58,7 @@ pub async fn receive_message(socket: tauri::State<'_, Socket>, unacknowledged_me
         println!("RECEIVED: {}\n\tFROM: {} ({})", &received_message, received_message["from"], decrypt_ip(received_message["from"].to_string()).unwrap());
 
         //if it is a confirmation
-        if received_message["type"] == 1 {
+        if received_message["type"] == 0 {
             let mut index = 0;
             for message in unacknowledged_messages.0.lock().unwrap().iter() {
                 if json::parse(message.0.as_str()).unwrap()["id"] ==  received_message["id"] {
@@ -75,7 +75,7 @@ pub async fn receive_message(socket: tauri::State<'_, Socket>, unacknowledged_me
             let message = json::parse(String::from_utf8(buf.to_vec()).unwrap().as_str()).unwrap();
             let response = json::object!{
                 "from": encrypt_ip(socket.0.local_addr().unwrap().to_string()).unwrap(),
-                "type": 1,
+                "type": 0,
                 "id": message["id"].clone()
             }.to_string();
             println!("SENDING ACKNOWLEDGEMENT: {} \n\tTO: {}", response, decrypt_ip(message["from"].to_string()).unwrap());

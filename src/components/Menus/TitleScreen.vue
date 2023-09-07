@@ -1,28 +1,26 @@
 <script setup lang="ts">
-import { invoke } from '@tauri-apps/api';
 import { ref } from 'vue';
-import { Message, MessageType } from '../Message'
+import { createMessage, Message, MessageType } from '../Message'
+import { sendMessage, useVarStore } from '../../main';
 
 let encryptedIp = ref('');
-let username = ref('');
 
 function connect(encryptedIp: string) {
-    invoke('get_encrypted_ip_address').then( (ip: any) => {
-
-    let message = JSON.stringify(
-        Message(ip, username.value, MessageType.ConnectionRequest, "")
-    );
-    invoke('send_message_encrypted_ip', {message: message, encryptedIp: encryptedIp})
-})
+    createMessage(useVarStore().username, MessageType.ConnectionRequest, "").then((message: unknown) =>
+        sendMessage(message as Message, encryptedIp)
+    )
 }
 
 </script>
 
 <template>
-    <h1>3D Tic Tac Toe</h1>
+    <p class="center">Welcome to</p>
+    <h1 class="center">3D Tic Tac Toe</h1>
+    <router-link to="/" style="font-weight: bold; color: white" class="center">{{ useVarStore().username }}</router-link>
+    <br>
+    <br>
     <div class="center">
-        <input v-model="username" placeholder="Username...">
-        <input v-model="encryptedIp" placeholder="Enter Lobby Id...">
+        <input v-model="encryptedIp" placeholder="Enter Lobby Id..." v-on:keydown.enter="connect(encryptedIp)">
         <button @click="connect(encryptedIp)">Join</button>
     </div>
     <router-link class="center" to="CreateLobby">Create Lobby</router-link>

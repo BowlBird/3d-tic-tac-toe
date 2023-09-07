@@ -24,6 +24,8 @@ After cloning the project, in the folder you will need to run
 cargo install tauri-cli
 ```
 to install tauri
+(NOTE: on windows you will need to restart)
+
 and
 ```
 npm install

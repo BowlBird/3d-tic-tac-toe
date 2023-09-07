@@ -1,20 +1,26 @@
 <script setup lang="ts">
 import { invoke } from '@tauri-apps/api';
-import { Ref, ref } from 'vue';
+import { useCallbackStore } from './main.ts';
+import { Message, messageFromString } from './components/Message';
+
 invoke('message_watcher');
 receiveMessage();
 
 async function receiveMessage() {
-    invoke('receive_message').then((message: unknown) => {
-      messages.value.push(message as string);
-      console.log(messages.value);
-        //let message = JSON.parse(json as string);
-        //messageHistory.value += `${message.username}: ${message.content}\n`;
-        receiveMessage()
-    });
-} 
+   invoke('receive_message').then((messageString: unknown) => {
+      let message = messageFromString(messageString as string)
 
-let messages: Ref<String[]> = ref([])
+      invoke('log', {string: `Sending '${messageString}' To: `})
+
+      const callbacks = useCallbackStore();
+      callbacks.functions.get(message.type)?.forEach((fun: ((message: Message) => void)) => {
+         invoke('log', {string: fun.name.toString()})
+         fun(message);
+      })
+
+      receiveMessage()
+   });
+} 
 </script>
 
 <template>
