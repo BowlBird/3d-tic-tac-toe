@@ -25,7 +25,10 @@ export const useCallbackStore = defineStore('callback', {
     deregister(type: MessageType, fun: ((message: Message) => void)) {
       //if fun is registered for the messagetype
       if (this.functions.get(type)?.indexOf(fun) != -1) {
-        this.functions.get(type)?.filter( f => f != fun)
+        let updatedList = this.functions.get(type)?.filter( f => f != fun)
+        if (updatedList != undefined) {
+          this.functions.set(type, updatedList)
+        }
       }
     },
     clear() {
@@ -36,7 +39,7 @@ export const useCallbackStore = defineStore('callback', {
 
 export const useVarStore = defineStore('var', {
   state: () => {
-    return {username: ""}
+    return {username: "", hostIp: ""}
   }
 });
 

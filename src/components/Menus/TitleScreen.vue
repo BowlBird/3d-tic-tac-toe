@@ -1,14 +1,21 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { createMessage, Message, MessageType } from '../Message'
-import { sendMessage, useVarStore } from '../../main';
+import { sendMessage, useCallbackStore, useVarStore } from '../../main';
+import router from '../../router';
 
 let encryptedIp = ref('');
 
 function connect(encryptedIp: string) {
-    createMessage(useVarStore().username, MessageType.ConnectionRequest, "").then((message: unknown) =>
+    createMessage(useVarStore().username, MessageType.ConnectionRequest, "").then((message: unknown) => {
         sendMessage(message as Message, encryptedIp)
-    )
+        useCallbackStore().register(MessageType.ConnectionApproval, onConnectionApproval)
+    })
+}
+
+function onConnectionApproval(message: Message) {
+    useVarStore().hostIp = message.from
+    router.push('JoinLobby');
 }
 
 </script>

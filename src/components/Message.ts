@@ -3,7 +3,14 @@ import { invoke } from "@tauri-apps/api";
 export enum MessageType {
     Confirmation,
     ConnectionRequest,
-    ConnectionApproval
+    ConnectionApproval,
+    HeartbeatCall,
+    HeartbeatResponse,
+    LobbyClientDisconnectionNotification,
+    LobbyHostDisconnectionNotification,
+    LobbyInitialInformationRequest,
+    LobbyInitialInformationResponse,
+    LobbyInformationUpdate,
 }
 
 export type Message = {
