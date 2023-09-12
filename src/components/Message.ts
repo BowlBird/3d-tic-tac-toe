@@ -11,6 +11,9 @@ export enum MessageType {
     LobbyInitialInformationRequest,
     LobbyInitialInformationResponse,
     LobbyInformationUpdate,
+    GameStartNotification,
+    GameStateUpdate,
+    GameTurnAttempt,
 }
 
 export type Message = {

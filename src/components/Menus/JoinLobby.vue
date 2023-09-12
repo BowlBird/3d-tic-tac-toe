@@ -12,6 +12,7 @@ callbacks.register(MessageType.HeartbeatCall, heartbeatResponse)
 callbacks.register(MessageType.LobbyInitialInformationResponse, handleInfoUpdate)
 callbacks.register(MessageType.LobbyInformationUpdate, handleInfoUpdate)
 callbacks.register(MessageType.LobbyHostDisconnectionNotification, onHostDisconnection)
+callbacks.register(MessageType.GameStartNotification, onGameStart)
 
 requestInitialInfo()
 
@@ -43,6 +44,11 @@ function heartbeatResponse(message: Message) {
 function onHostDisconnection(_: Message) {
     callbacks.clear()
     router.push("Title")
+}
+
+function onGameStart(message: Message) {
+    useVarStore().icon = message.content
+    router.push('JoinGame')
 }
 
 </script>

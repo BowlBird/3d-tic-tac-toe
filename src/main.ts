@@ -1,4 +1,4 @@
-import { createApp } from "vue";
+import { Ref, createApp, ref } from "vue";
 import "./styles.css";
 import App from "./App.vue";
 import router from "./router";
@@ -6,10 +6,19 @@ import { createPinia, defineStore } from 'pinia'
 import { Message, MessageType } from "./components/Message";
 import { invoke } from "@tauri-apps/api";
 
+export type Player = {
+  username: string
+  ip: string
+  icon: string
+}
+
+export type PlayerInfo = {
+  username: string
+  icon: string
+}
+
 const pinia = createPinia();
 createApp(App).use(router).use(pinia).mount("#app");
-
-
 
 export const useCallbackStore = defineStore('callback', {
   state: () => {
@@ -38,8 +47,8 @@ export const useCallbackStore = defineStore('callback', {
 });
 
 export const useVarStore = defineStore('var', {
-  state: () => {
-    return {username: "", hostIp: ""}
+  state: () => {                      //DOES NOT INCLUDE HOST
+    return {username: "", hostIp: "", connectedPlayers: ref([]) as Ref<Player[]>, icon: ""}
   }
 });
 
